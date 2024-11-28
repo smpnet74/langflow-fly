@@ -1,0 +1,36 @@
+# fly.toml app configuration file generated for langflow-cool-dew-3439 on 2024-11-28T04:09:11Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'langflow-cool-dew-3439'
+primary_region = 'lax'
+
+[build]
+  dockerfile = 'Dockerfile'
+
+[env]
+  HOST = '0.0.0.0'
+  PORT = '8080'
+  TIMEOUT_MINUTES = '5'
+
+[[mounts]]
+  source = 'langflow_data'
+  destination = '/data'
+  initial_size = '1GB'
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+# Remove the redundant [[services]] section since we're using [http_service]
+# This might be causing conflicts in the auto-scaling behavior
+
+[[vm]]
+  memory = '2gb'
+  cpu_kind = 'shared'
+  cpus = 1
